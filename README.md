@@ -1,4 +1,4 @@
-# Multi-Domain RAG Agent (Medical · Pharma · Marketing)
+﻿# Multi-Domain RAG Agent (Medical · Pharma · Marketing)
 
 One generic AI agent that answers from a private knowledge base (RAG) and adapts to a new industry by swapping **one YAML file and one document folder**. No domain logic lives in the Python code.
 
@@ -27,20 +27,13 @@ Free API key (no card): https://aistudio.google.com/apikey
 |---|---|
 | `python check_setup.py` | Verify environment, key, models, index, guardrails |
 | `python ingest.py [domain] [--rebuild]` | Index documents; only new/changed chunks are embedded |
-| `python cli.py --domain medical` | Terminal chat (`/domain pharma`, `/task red_flags`, `/quit`) |
 | `python -m evaluation.run_eval --domain medical [--judge]` | Run the golden set, write `evaluation/results_<domain>.md` |
-| `python calibrate.py` | Compute a data-driven `MIN_RELEVANCE` from the golden set |
-| `python -m evaluation.question_forge --domain medical --n 10` | Draft test questions from your indexed documents (review by hand), then `run_eval --file forged_medical.json` |
-| `python quota_test.py` | Diagnose Gemini quota / model availability |
 
 ## Project structure
 ```
 app.py                    Streamlit chat UI (domain + task switcher, citations, confidence)
-cli.py                    Terminal chat
 ingest.py                 Incremental indexing
 check_setup.py            Health check
-calibrate.py              Relevance-threshold calibration
-quota_test.py             Gemini diagnostics
 dagent/
   agent.py                The single generic agent (pipeline)
   rag.py                  Loaders (md/txt/pdf/csv/tsv), chunking, Chroma, retrieval
@@ -51,7 +44,6 @@ dagent/
   config.py               Settings from .env
 domains/*.yaml            System prompt, few-shot, tasks, guardrail patterns, disclaimer
 knowledge_base/<domain>/  Documents per domain (PDF, MD, TXT, CSV)
-knowledge_base_samples/   Synthetic sample documents
 evaluation/               Golden set, evaluation runner, Question Forge (test-set drafting)
 user_profiles/            Local per-user memory (created at runtime, git-ignored)
 docs/                     Architecture, design document, Arabic project guide
